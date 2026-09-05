@@ -1,0 +1,176 @@
+STOCKFLOW — INVENTORY MANAGEMENT SYSTEM
+CUSTOMER GUIDE
+Version: 1.0.0
+Copyright © 2026 UpComing Solution
+
+==================================================
+WELCOME
+==================================================
+Thank you for purchasing StockFlow — Inventory
+Management System.
+
+StockFlow is designed to help small businesses track
+products, stock levels, suppliers and categories from
+one interface.
+
+==================================================
+WHAT'S INCLUDED
+==================================================
+Your package may contain:
+- index.html
+- README.md
+- LICENSE.txt
+- CUSTOMER-GUIDE.txt
+- Dashboard screenshot
+
+==================================================
+SYSTEM REQUIREMENTS
+==================================================
+The current browser-based version does not require:
+- PHP
+- MySQL
+- Apache
+- cPanel
+- A database server
+
+A modern web browser is recommended.
+Supported browsers include modern versions of:
+- Google Chrome
+- Microsoft Edge
+- Mozilla Firefox
+- Safari
+
+==================================================
+HOW TO START
+==================================================
+1. Download the StockFlow ZIP package.
+2. Extract the ZIP file.
+3. Open the extracted folder.
+4. Find:
+   index.html
+5. Double-click index.html.
+6. StockFlow will open in your web browser.
+
+==================================================
+MAIN SECTIONS
+==================================================
+StockFlow includes the following main sections:
+1. Dashboard
+2. Products
+3. Stock Movements
+4. Suppliers
+5. Categories
+6. Reports
+
+==================================================
+1. DASHBOARD
+==================================================
+The Dashboard provides an overview of your inventory,
+including low-stock alerts and a quick summary.
+
+==================================================
+2. PRODUCTS
+==================================================
+Use Products to manage your inventory items.
+
+You can:
+- Add a new product (SKU, name, category, supplier,
+  buy price, sell price, stock, minimum threshold)
+- Track current stock per product
+- See which products are low on stock
+
+==================================================
+3. STOCK MOVEMENTS
+==================================================
+Use Stock Movements to record stock changes:
+- Stock IN (new stock received)
+- Stock OUT (stock sold or used)
+- Adjustment (manual correction)
+
+Each movement is logged with a note and timestamp.
+
+==================================================
+4. SUPPLIERS
+==================================================
+The Suppliers section is used to manage supplier
+contact information, including phone, email and
+address.
+
+==================================================
+5. CATEGORIES
+==================================================
+Use Categories to organize products into groups for
+easier tracking and reporting.
+
+==================================================
+6. REPORTS
+==================================================
+The Reports section provides an inventory value
+overview and low-stock reporting.
+
+==================================================
+DATA STORAGE
+==================================================
+The current browser-based version uses browser-based
+local storage for application data.
+
+Important:
+- Data is stored locally in the browser.
+- Data may not automatically synchronize between devices.
+- Clearing browser data may remove stored application
+  information.
+- Regular backups are recommended.
+
+==================================================
+BACKUP
+==================================================
+Always maintain regular backups of important business
+information.
+
+Do not rely on a single browser or computer as the only
+copy of important business data.
+
+==================================================
+IMPORTANT
+==================================================
+This is the browser-based version of StockFlow.
+It does not currently require PHP, MySQL or a server.
+
+For a production business deployment, additional
+features may be required, such as:
+- Secure backend
+- Database
+- User authentication
+- Barcode scanning
+- Multi-location inventory
+- Automated backups
+- Cloud synchronization
+
+==================================================
+LICENSE
+==================================================
+Please read LICENSE.txt before using the software.
+
+The software may not be redistributed or resold unless
+specifically permitted by the applicable license.
+
+==================================================
+SUPPORT
+==================================================
+For support, customization or software development:
+
+UpComing Solution
+Website:
+https://app.upcomingsolution.com/
+
+==================================================
+VERSION
+==================================================
+StockFlow — Inventory Management System
+Version 1.0.0
+© 2026 UpComing Solution
+All Rights Reserved.
+
+==================================================
+END OF CUSTOMER GUIDE
+==================================================
