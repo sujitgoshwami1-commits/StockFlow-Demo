@@ -72,7 +72,8 @@ label{font-size:13px;font-weight:600;color:#374151}input,select{width:100%;margi
 <header class="topbar">
   <h1 id="pageTitle">Dashboard</h1>
   <div class="top-actions">
-
+    <select id="currencySelect" onchange="changeCurrency()" style="padding:8px 10px;border-radius:8px;border:1px solid var(--line,#e5e7eb)"><option value="USD">USD $</option><option value="GBP">GBP £</option><option value="CAD">CAD $</option><option value="AUD">AUD $</option><option value="EUR">EUR €</option></select>
+    <button class="btn light" onclick="demoToast('Demo mode — data resets daily at midnight.')">Demo Mode</button>
     <button class="btn primary" onclick="showView('products',document.querySelectorAll('.nav button')[1])">+ Add Product</button>
   </div>
 </header>
@@ -80,10 +81,7 @@ label{font-size:13px;font-weight:600;color:#374151}input,select{width:100%;margi
 <div class="container">
 
 <section id="dashboard" class="view active">
-  <div class="hero"><div><h2>Good morning 👋</h2><p>Here’s your inventory overview.</p></div></div>
-  <div style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;padding:12px 14px;border-radius:10px;margin-bottom:18px;font-size:13px">
-    <b>Demo Mode:</b> Changes you make today are temporary. The demo automatically returns to the original sample data after local midnight.
-  </div>
+  <div class="hero"><div><h2>Good morning 👋</h2><p>Here’s your inventory overview. <em style="color:var(--warning)">Demo data resets every day at midnight.</em></p></div></div>
   <div class="cards">
     <div class="card"><div class="card-label">Total Products <span class="icon">P</span></div><div class="card-value" id="totalProducts">0</div><div class="card-note">Active products</div></div>
     <div class="card"><div class="card-label">Total Units <span class="icon">U</span></div><div class="card-value" id="totalUnits">0</div><div class="card-note">Units currently in stock</div></div>
@@ -164,9 +162,9 @@ label{font-size:13px;font-weight:600;color:#374151}input,select{width:100%;margi
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='stockflow_v1';
-const DEMO_DAY_KEY='stockflow_demo_day';
-const INITIAL_DATA={
+const KEY='stockflow_demo_v1';
+const RESET_KEY='stockflow_demo_last_reset';
+const DEFAULT_DATA={
  products:[
   {sku:'SF-1001',name:'Wireless Mouse',cat:'Electronics',supplier:'Tech Supply',buy:8,sell:15,qty:24,min:10},
   {sku:'SF-1002',name:'USB-C Cable',cat:'Accessories',supplier:'Global Parts',buy:3.5,sell:8,qty:6,min:10},
@@ -178,19 +176,34 @@ const INITIAL_DATA={
   {name:'Global Parts',phone:'+1 555 0102',email:'hello@globalparts.example',address:'Toronto'}
  ],
  categories:['General','Electronics','Accessories','Office'],
- movements:[]
+ movements:[],
+ currency:'USD'
 };
-function localDayKey(d=new Date()){
- return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function todayStr(){return new Date().toDateString()}
+function freshData(){return JSON.parse(JSON.stringify(DEFAULT_DATA))}
+function loadData(){
+ let lastReset=localStorage.getItem(RESET_KEY),today=todayStr();
+ if(lastReset!==today){
+  localStorage.setItem(RESET_KEY,today);
+  localStorage.setItem(KEY,JSON.stringify(freshData()));
+  return freshData();
+ }
+ return JSON.parse(localStorage.getItem(KEY)||'null')||freshData();
 }
-const todayKey=localDayKey();
-if(localStorage.getItem(DEMO_DAY_KEY)!==todayKey){
- localStorage.setItem(KEY,JSON.stringify(INITIAL_DATA));
- localStorage.setItem(DEMO_DAY_KEY,todayKey);
+let data=loadData();
+function save(){localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem(RESET_KEY,todayStr())}
+function checkMidnightReset(){
+ if(localStorage.getItem(RESET_KEY)!==todayStr()){
+  data=freshData();
+  localStorage.setItem(KEY,JSON.stringify(data));
+  localStorage.setItem(RESET_KEY,todayStr());
+  renderAll();
+  demoToast('Demo data has been reset for a new day.');
+ }
 }
-let data=JSON.parse(localStorage.getItem(KEY)||'null')||JSON.parse(JSON.stringify(INITIAL_DATA));
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
-function money(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+setInterval(checkMidnightReset,60000);
+function money(n){return new Intl.NumberFormat(undefined,{style:'currency',currency:data.currency||'USD'}).format(Number(n)||0)}
+function changeCurrency(){data.currency=document.getElementById('currencySelect').value;save();renderAll()}
 function demoToast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
 function showView(id,btn){
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -200,7 +213,7 @@ function showView(id,btn){
  document.getElementById('pageTitle').textContent=id.charAt(0).toUpperCase()+id.slice(1);
  renderAll();
 }
-function renderAll(){renderDashboard();renderProducts();renderMoves();renderSuppliers();renderCategories();renderReports()}
+function renderAll(){document.getElementById('currencySelect').value=data.currency||'USD';renderDashboard();renderProducts();renderMoves();renderSuppliers();renderCategories();renderReports()}
 function renderDashboard(){
  let ps=data.products, units=ps.reduce((a,p)=>a+p.qty,0), low=ps.filter(p=>p.qty<=p.min), value=ps.reduce((a,p)=>a+p.qty*p.buy,0);
  document.getElementById('totalProducts').textContent=ps.length;document.getElementById('totalUnits').textContent=units;
